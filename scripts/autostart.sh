@@ -4,79 +4,79 @@ mountpoint="${2}"
 # Path and file name
 #  - ${mountpoint}/autostart.sh - coded in utf-8
 
-#                autostart für externe Datenträger
+#                Autostart for external usb devices
 #
 #                  Developed by tommes (toafez)
 #              MIT License https://mit-license.org/
 #        Member of the German UGREEN Forum - DACH Community
 #
-#       Dieses Script wurde speziell für die Verwendung auf
-#            UGREEN-NAS Systemen entwickelt die das
-#              Betriebsystem OGOS Pro verwenden.
+#        This script was developed specifically for use on 
+#                UGREEN-NAS systems that use the
+#                   operating system UGOS Pro.
 
 
 #---------------------------------------------------------------------
-#                   !!! BENUTZEREINGABEN !!!
+#                   !!! USER INPUT !!!
 #---------------------------------------------------------------------
 
-# Zielverzeichnis
+# Target directory
 #---------------------------------------------------------------------
-# Syntaxmuster: target="/[VOLUME]/[SHARE]/[FOLDER]"
+# Syntax pattern: target="/[VOLUME]/[SHARE]/[FOLDER]"
 #---------------------------------------------------------------------
-# Dem Pfad zum Zielverzeichnis muss in jedem Fall die Variable
-# ${mountpoint} vorangestellt werden. Weitere Unterverzeichnisse sind
-# möglich. Wenn das Zielverzeichnis nicht existiert, wird es bei der
-# ersten Datensicherung angelegt. Ungültige Zeichen in Datei- und
-# Verzeichnisnamen sind ~ " # % & * : < > ? / \ { | }
+# The path to the target directory must always be preceded by the variable
+# ${mountpoint} must always be prefixed. Further subdirectories are
+# are possible. If the target directory does not exist, it is created during the
+# first data backup. Invalid characters in file and
+# directory names are ~ “ # % & * : < > ? / \ { | }
 #---------------------------------------------------------------------
 target="${mountpoint}/"
 
-# Datensicherungsquelle(n)
+# Data backup source(s)
 #---------------------------------------------------------------------
-# Syntaxmuster: sources="/[SHARE1]/[FOLDER1] & /[SHARE2]/[FOLDER2]"
+# Syntax pattern: sources="/[SHARE1]/[FOLDER1] & /[SHARE2]/[FOLDER2]”
 #---------------------------------------------------------------------
-# Es muss der vollständige Pfad zum Quellverzeichnis angegeben werden.
-# Wenn mehr als ein Quellverzeichnis angegeben wird, müssen die Pfade
-# durch das Symbol & getrennt werden, z. B.
-# "/volume1/photo & /volume1/music/compilation & /volume1/video/series"
-# Ungültige Zeichen in Datei- und Verzeichnisnamen sind
+# The complete path to the source directory must be specified.
+# If more than one source directory is specified, the paths must be
+# must be separated by the & symbol, e.g.
+# “/volume1/photo & /volume1/music/compilation & /volume1/video/series”
+# Invalid characters in file and directory names are
 # ~ " # % & * : < > ? / \ { | }
 #---------------------------------------------------------------------
 sources=""
 
-# Inhalt des Papierkorbs /@recycle löschen, der älter ist als...
+# Delete contents of the recycle bin /@recycle that are older than...
 #---------------------------------------------------------------------
-# Syntaxmuster: recycle="false", "30" (Standardauswahl) oder "true"
+# Syntax pattern: recycle=“false”, “30” (default selection) or “true”
 #---------------------------------------------------------------------
-# Wird für recycle= der Wert "false" angegeben, so werden alle
-# zwischenzeitlich gelöschten Daten der Sicherungsquelle(n) auch im
-#  Sicherungsziel unwiderruflich gelöscht. Wird für recycle= ein
-# numerischer Wert von mindestens 1 angegeben, so werden
-# zwischenzeitlich gelöschte Daten der Sicherungsquelle(n) für die
-# angegebene Zeit in Tagen in den Papierkorb unter /@recycle des
-# Zielordners verschoben, bevor sie unwiderruflich gelöscht werden.
-# Wird für recycle= der Wert "true" angegeben, so werden
-# zwischenzeitlich gelöschte Daten der Sicherungsquelle(n) immer in
-# den Papierkorb unter /@recycle des Zielordners verschoben, ohne dass
-# sie zukünftig gelöscht werden.
+# If the value “false” is specified for recycle=, all data that has been
+# data from the backup source(s) that has been deleted in the meantime will also be
+# irrevocably deleted in the backup destination. If for recycle= a
+# numeric value of at least 1 is specified for recycle=, then
+# data from the backup source(s) that has # been deleted in the meantime will be stored in the
+# specified time in days is moved to the recycle bin under /@recycle of the
+# destination folder before they are irrevocably deleted.
+# If the value “true” is specified for recycle=, then
+# data from the backup source(s) that has been deleted in the meantime is always moved to
+# moved to the recycle bin under /@recycle of the destination folder without being # deleted in the future.
+# they will be deleted in the future.
 #---------------------------------------------------------------------
 recycle="30"
 
 # rsync Optionen
 #---------------------------------------------------------------------
-# Syntaxmuster: syncopt="-ah" (Standardauswahl)
+# Syntax pattern: syncopt="-ah" (Default selection)
 #---------------------------------------------------------------------
 syncopt="-ah --info=progress2"
 
-# Ausschließen von Dateien und Verzeichnissen
+# Exclude files and directories
 #---------------------------------------------------------------------
-# Syntaxmuster: exclude="--delete-excluded --exclude=[DATEI-ODER-VERZEICHNIS]"
+# Syntax pattern: exclude="--delete-excluded --exclude=[FILE-OR-DIRECTORY]”
 #---------------------------------------------------------------------
 exclude="--delete-excluded --exclude=@eaDir/*** --exclude=@Logfiles/*** --exclude=#recycle/*** --exclude=#snapshot/*** --exclude=.DS_Store/***"
 
 
 #---------------------------------------------------------------------
-#          !!! AB HIER BITTE NICHTS MEHR ÄNDERN !!!
+#       !!! FROM HERE ON PLEASE DO NOT CHANGE ANYTHING !!!
 #---------------------------------------------------------------------
 
 # --------------------------------------------------------------
@@ -117,11 +117,11 @@ exclude="--delete-excluded --exclude=@eaDir/*** --exclude=@Logfiles/*** --exclud
 
 	# If the target folder could not be created
 	if [[ "${exit_mkdir}" -ne 0 ]]; then
-		echo "# $(timestamp) Starte synchrone rsync Datensicherung auf einen externen Datenträger..." | tee -a "${logfile}"
-		echo " - Warnung: Der Zielordner konnte nicht erstellt werden." | tee -a "${logfile}"
+		echo "# $(timestamp) Start synchronous rsync data backup to an external storage medium..." | tee -a "${logfile}"
+		echo " - Warning: The target folder could not be created." | tee -a "${logfile}"
 		exit_code=1
 	else
-		echo "# $(timestamp) Starte synchrone rsync Datensicherung auf einen externen Datenträger..." | tee -a "${logfile}"
+		echo "# $(timestamp) Start synchronous rsync data backup to an external storage medium..." | tee -a "${logfile}"
 		exit_code=0
 
 	fi
@@ -145,8 +145,8 @@ fi
 if [[ ${exit_code} -eq 0 ]]; then
 	# If the ionice program is installed, use it, otherwise use the rsync bandwidth limitation
 	if command -v ionice 2>&1 >/dev/null; then
-		echo " - Das Programm [ ionice ] optimiert die Lese- und Schreibgeschwindigkeit des rsync-Prozesses" | tee -a "${logfile}"
-		echo "   um die Verfügbarkeit des Systems während der Datensicherung zu gewährleisten!" | tee -a "${logfile}"
+		echo " - The [ ionice ] program optimizes the read and write speed of the rsync process" | tee -a "${logfile}"
+		echo "   to ensure the availability of the system during the data backup!" | tee -a "${logfile}"
 		ionice="ionice -c 3"
 	fi
 fi
@@ -166,8 +166,8 @@ if [[ ${exit_code} -eq 0 ]]; then
 		# ------------------------------------------------------
 		echo "" | tee -a "${logfile}"
 		echo "# $(timestamp) Schreibe rsync-Protokoll..." | tee -a "${logfile}"
-		echo " - Quellverzeichnis: ${source}" | tee -a "${logfile}"
-		echo " - Zielverzeichnis: ${target}${source##*/}" | tee -a "${logfile}"
+		echo " - Source directory: ${source}" | tee -a "${logfile}"
+		echo " - Target directory: ${target}${source##*/}" | tee -a "${logfile}"
 		${ionice} \
 		rsync \
 		${syncopt} \
@@ -183,8 +183,8 @@ if [[ ${exit_code} -eq 0 ]]; then
 		# ------------------------------------------------------
 		if [[ "${rsync_exit_code}" -ne 0 ]]; then
 			echo "" | tee -a "${logfile}"
-			echo "Warnung: Rsync meldet Fehlercode ${rsync_exit_code}!" | tee -a "${logfile}"
-			echo " - Prüfe das Protokoll für weitere Informationen." | tee -a "${logfile}"
+			echo "Warning: Rsync reports error code ${rsync_exit_code}!" | tee -a "${logfile}"
+			echo " - Check the log for more information." | tee -a "${logfile}"
 			echo "" | tee -a "${logfile}"
 			exit_code=1
 		else
@@ -192,7 +192,7 @@ if [[ ${exit_code} -eq 0 ]]; then
 		fi
 	done
 	echo "" | tee -a "${logfile}"
-	echo "# $(timestamp) Der Auftrag wird abgeschlossen..." | tee -a "${logfile}"
+	echo "# $(timestamp) The task is being completed..." | tee -a "${logfile}"
 fi
 
 # --------------------------------------------------------------
@@ -200,12 +200,12 @@ fi
 # --------------------------------------------------------------
 if [[ ${exit_code} -eq 0 ]]; then
 	if [ -n "${recycle}" ] && [[ "${recycle}" -ne 0 ]] && [[ "${recycle}" =~ ${is_number} ]]; then
-		echo " - Zwischenzeitlich gelöschte Daten der Sicherungsquelle(n) werden in den" | tee -a "${logfile}"
-		echo "   Ordner /@recycle, des Sicherungsziels verschoben." | tee -a "${logfile}"
+		echo " - Data from the backup source(s) that has been deleted in the meantime is saved in the" | tee -a "${logfile}"
+		echo "   folder /@recycle, from the backup target shifted." | tee -a "${logfile}"
 		if [ -d "${target%/*}/@recycle" ]; then
 			find "${target%/*}/@recycle/"* -maxdepth 0 -type d -mtime +${recycle} -print0 | xargs -0 rm -r 2>/dev/null
 			if [[ ${?} -eq 0 ]]; then
-				echo " - Daten aus dem Ordner /@recycle, die älter als ${recycle} Tage waren, wurden gelöscht." | tee -a "${logfile}"
+				echo " - Data from the /@recycle folder that was older than ${recycle} days have been deleted." | tee -a "${logfile}"
 			fi
 		fi
 	fi
@@ -216,10 +216,10 @@ fi
 # ------------------------------------------------------------------------
 if [[ "${exit_code}" -eq 0 ]]; then
 	# Notification that the backup job was successfully executed
-	echo " - Der Sicherungsauftrag wurde erfolgreich ausgeführt." | tee -a "${logfile}"
+	echo " - The backup job was executed successfully." | tee -a "${logfile}"
 	exit 0
 else
 	# Notification that the backup job contained errors
-	echo " - Warnung: Der Sicherungsauftrag ist fehlgeschlagen oder wurde abgebrochen." | tee -a "${logfile}"
+	echo " - Warning: The backup job failed or was canceled." | tee -a "${logfile}"
 	exit 1
 fi

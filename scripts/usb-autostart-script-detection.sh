@@ -2,15 +2,15 @@
 # Path and file name 
 #  - /usr/local/bin/usb-autostart-script-detection.sh (755) - coded in utf-8
 
-#                autostart für externe Datenträger
+#                autostart for external storage media
 #
 #                  Developed by tommes (toafez)
 #              MIT License https://mit-license.org/
 #        Member of the German UGREEN Forum - DACH Community
 #
-#       Dieses Script wurde speziell für die Verwendung auf 
-#            UGREEN-NAS Systemen entwickelt die das
-#              Betriebsystem UGOS Pro verwenden.
+#        This script was developed specifically for use on 
+#              UGREEN-NAS systems that use the
+#                  operating system UGOS Pro.
 
 # --------------------------------------------------------------
 # Define Enviroment
