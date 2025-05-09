@@ -1,33 +1,38 @@
-# autostart for external storage media
+# Autostart for external storage media for UGREEN UGOS PRO
 
-**autostart** allows you to **execute any shell script statements** that are automatically executed **after** connecting an external USB storage media** to your **UGREEN NAS**.
+**Autostart** allows you to **execute any shell script statements** that are automatically executed **after** connecting an **external USB storage media** to your **UGREEN NAS**.
+
+> [!NOTE]
+> If you looking for the german version, click on [this]( https://github.com/toafez/UGREEN_autostart) Link.
 
 ## How does autostart work
 
 If an external USB storage media is connected to the **UGREEN-NAS**, it is first recognized by **UGOS Pro** and integrated into the system (mounted). Then **autostart** checks whether there is a shell script file with the name **autostart.sh** in the root directory of the external USB storage media or on the mounted partitions. If this is the case, the content of the shell script file is executed, otherwise the monitoring for this storage media is terminated. After the execution of the shell script file, a log file with the name **autostart.log** is stored in the root directory of the external USB storage media.
 
-## Safety instructions
-
-After setting up **autostart**, the contents of the **autostart.sh** file are executed with **root rights** each time an external USB storage media is plugged in. This gives the user a great deal of freedom, but also a **high degree of responsibility**. In addition to unintentional or unforeseeable errors in the script itself, some of which can cause considerable damage, there may also be deliberate attempts by third parties to compromise the script if they are aware of the existence of autostart on your UGREEN NAS.
-
-Since **autostart** cannot yet be integrated as an app in **UGOS Pro**, there are also no advanced configuration options, such as a switch to temporarily deactivate the autostart function or to swap the shell script file to an internal volume of the UGREEN NAS and link it to the UUID of the external USB storage media, as the app [AutoPilot](https://github.com/toafez/AutoPilot) from toafez written for Synology allows.
-
-Due to the existing security deficiencies, toafez added instructions at the end on how to uninstall **autostart** via the command line if necessary.
+> [!IMPORTANT]
+> ## Safety instructions
+> After setting up **autostart**, the contents of the **autostart.sh** file are executed with **root rights** each time an external USB storage media is plugged in. This gives the user a great deal of freedom, but also a
+> **high degree of responsibility**. In addition to unintentional or unforeseeable errors in the script itself, some of which can cause considerable damage, there may also be deliberate attempts by third parties to
+> compromise the script if they are aware of the existence of autostart on your UGREEN NAS.
+> Since **autostart** cannot yet be integrated as an app in **UGOS Pro**, there are also no advanced configuration options, such as a switch to temporarily deactivate the autostart function or to swap the shell script
+> file to an internal volume of the UGREEN NAS and link it to the UUID of the external USB storage media, as the app [AutoPilot](https://github.com/toafez/AutoPilot) from toafez written for Synology allows.
+> Due to the existing security deficiencies, toafez added instructions at the end on how to uninstall **autostart** via the command line if necessary.
 
 ## Installation instructions
 
 For the initial setup of autostart, it is necessary to connect to the command line of your UGREEN NAS via SSH. This requires a terminal program such as PuTTy, Windows PowerShell, MAC Terminal or one of the numerous terminal programs under Linux. However, the command line will no longer be required later, as the autostart.sh shell script file can be edited using the **TextEdit** app provided by UGREEN.
 
-## Activate SSH service
+### Activate SSH service
 
 To establish an SSH connection to your UGREEN NAS, you must first activate the SSH service in UGOS Pro. To do this, log in to the UGOS Pro of your UGREEN NAS with an administrator account. Then navigate to My Apps > Control Panel > Terminal and activate the Enable SSH checkbox. If required, you can adjust the port that the SSH service should use directly below. Click on the Apply button to save your settings.
 
-## Establish connection
+### Establish connection
 
 - Start your preferred terminal program.
 - In the following example, the name of the UGOS Pro administrator account is MyAdmin. In this example, the UGREEN NAS itself can be reached via the IPv4 address 172.16.1.12 and has the name UGREEN NAS. Therefore, replace the placeholders for [PORT], [USERNAME] and [IP ADDRESS] in the following command with your own data. Then execute the following command.
 
-  **Note:** Text in capital letters within square brackets serves as a placeholder and must be replaced by your own information, including the square brackets.
+> [!NOTE]
+> Text in capital letters within square brackets serves as a placeholder and must be replaced by your own information, including the square brackets.
 
   **Syntax:**
 
@@ -37,15 +42,19 @@ To establish an SSH connection to your UGREEN NAS, you must first activate the S
 
     PS C:\Users\MyUser> ssh -p 22 MyAdmin@172.16.1.12
 
-- After executing the connection command by pressing Enter, you will be prompted to enter the password of the administrator account with which you want to log in to the console of your UGREEN NAS.
- 
-  MyAdmin@172.16.1.12's password:
+After executing the connection command by pressing Enter, you will be prompted to enter the password of the administrator account with which you want to log in to the console of your UGREEN NAS.
 
-- After successfully entering the password and then pressing Enter, the prompt should appear after a short greeting and, if necessary, further information.
+```bash
+MyAdmin@172.16.1.12's password:
+```
 
-  MyAdmin@UGREEN-NAS:~$
+After successfully entering the password and then pressing Enter, the prompt should appear after a short greeting and, if necessary, further information.
 
-## Download script files and set permissions
+```bash
+MyAdmin@UGREEN-NAS:~$
+```
+
+### Download script files and set permissions
 
 Now you need to download a UDEV rules file and another shell script file from this GitHub repository to your UGREEN NAS. Starting with the UDEV rules file **99-usb-device-detection.rules**, copy the following command line into your open terminal window and execute the command.
 
@@ -55,17 +64,21 @@ As the command must be executed as the system user root (recognizable by the pre
 
 Now continue with the shell script file **usb-autostart-script-detection.sh**, copy the following command line into your open terminal window and execute the command as well.
 
- sudo curl -L https://raw.githubusercontent.com/toafez/UGREEN_autostart/refs/heads/main/scripts/usb-autostart-script-detection.sh -o /usr/local/bin/usb-autostart-script-detection.sh
+```bash
+sudo curl -L https://raw.githubusercontent.com/toafez/UGREEN_autostart/refs/heads/main/scripts/usb-autostart-script-detection.sh -o /usr/local/bin/usb-autostart-script-detection.sh
+```
 
 As you have already logged in as root, you do not need to enter the password again.
 
 Certain access rights must still be assigned for this shell script file. Therefore, please also enter the following command
 
- sudo chmod +x /usr/local/bin/usb-autostart-script-detection.sh
- 
+```bash
+sudo chmod +x /usr/local/bin/usb-autostart-script-detection.sh
+```
+
 The installation is now completed. The monitoring of the external USB storage media is now active and the terminal connection can be terminated by entering the command exit.
  
-## Create autostart.sh and fill it with content
+### Create autostart.sh and fill it with content
 
 As already mentioned at the beginning, autostart now monitors whether an external USB drive has been connected to the UGREEN NAS and checks whether there is a shell script file with the name autostart.sh in the root directory of this external drive or on the mounted partitions.If this is the case, the content of the shell script file is executed, otherwise monitoring is terminated. At this point, it is up to you to decide which shell scripts you want to execute and which tasks should be associated with them. There are also no major requirements such as the assignment of access rights to this file, the only important thing is that the name of the file is autostart.sh.
 
@@ -103,9 +116,13 @@ To illustrate this, an rsync script for synchronous data backup of internal data
 Due to the security deficiencies mentioned above, autostart can be uninstalled relatively easily via the command line if required. First and foremost, it is sufficient to delete the UDEV rule file, as this terminates the monitoring. Alternatively, the shell script file that executes autostart.sh on the external storage media can also be deleted.
 
 **Deleting the UDEV rule file**
- 
- sudo rm /usr/lib/udev/rules.d/99-usb-device-detection.rules
+
+```bash
+sudo rm /usr/lib/udev/rules.d/99-usb-device-detection.rules
+```
 
 **Delete the shell script file**
- 
- sudo rm /usr/local/bin/usb-autostart-script-detection.sh
+
+```bash 
+sudo rm /usr/local/bin/usb-autostart-script-detection.sh
+```
