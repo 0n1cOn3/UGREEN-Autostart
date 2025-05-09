@@ -28,19 +28,23 @@ To establish an SSH connection to your UGREEN NAS, you must first activate the S
 
 ### Establish connection
 
-- Start your preferred terminal program.
-- In the following example, the name of the UGOS Pro administrator account is MyAdmin. In this example, the UGREEN NAS itself can be reached via the IPv4 address 172.16.1.12 and has the name UGREEN NAS. Therefore, replace the placeholders for [PORT], [USERNAME] and [IP ADDRESS] in the following command with your own data. Then execute the following command.
+1) Start your preferred terminal program.
+2) In the following example, the name of the UGOS Pro administrator account is MyAdmin. In this example, the UGREEN NAS itself can be reached via the IPv4 address 172.16.1.12 and has the name UGREEN NAS. Therefore, replace the placeholders for [PORT], [USERNAME] and [IP ADDRESS] in the following command with your own data. Then execute the following command.
 
 > [!NOTE]
 > Text in capital letters within square brackets serves as a placeholder and must be replaced by your own information, including the square brackets.
 
   **Syntax:**
 
-    ssh -p [PORT] [USERNAME]@[IP ADDRESS]
+```bash
+ssh -p [PORT] [USERNAME]@[IP ADDRESS]
+```
 
   **Example:** Command input in the Windows PowerShell
 
-    PS C:\Users\MyUser> ssh -p 22 MyAdmin@172.16.1.12
+```Powershell
+PS C:\Users\MyUser> ssh -p 22 MyAdmin@172.16.1.12
+```
 
 After executing the connection command by pressing Enter, you will be prompted to enter the password of the administrator account with which you want to log in to the console of your UGREEN NAS.
 
@@ -58,7 +62,9 @@ MyAdmin@UGREEN-NAS:~$
 
 Now you need to download a UDEV rules file and another shell script file from this GitHub repository to your UGREEN NAS. Starting with the UDEV rules file **99-usb-device-detection.rules**, copy the following command line into your open terminal window and execute the command.
 
- sudo curl -L https://raw.githubusercontent.com/toafez/UGREEN_autostart/refs/heads/main/scripts/99-usb-device-detection.rules -o /usr/lib/udev/rules.d/99-usb-device-detection.rules
+```bash
+sudo curl -L https://raw.githubusercontent.com/toafez/UGREEN_autostart/refs/heads/main/scripts/99-usb-device-detection.rules -o /usr/lib/udev/rules.d/99-usb-device-detection.rules
+```
 
 As the command must be executed as the system user root (recognizable by the preceding sudo command), you will be asked for a password once again. Here you enter the same password that you have already used to log in as administrator.
 
